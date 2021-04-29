@@ -14,72 +14,75 @@ public class Otimo {
     public int substituicao() {
         int faltas = 0;
         int quantidadeQuadros =  Integer.parseInt(this.quantidadeQuadros);
-        String fila[] = new String[quantidadeQuadros];
-        Integer tempoProxExecucao[] = new Integer[quantidadeQuadros];
-        boolean aux[] = new boolean[quantidadeQuadros];
-        boolean vazio = true;
-        boolean tem = false;
+
+        String quadro[] = new String[quantidadeQuadros];
+        Integer tempos[] = new Integer[quantidadeQuadros];
+        boolean temposBoolean[] = new boolean[quantidadeQuadros];
+
         for (int i = 0; i < quantidadeQuadros; i++) {
-            fila[i] = "";
-            tempoProxExecucao[i] = 0;
-            aux[i] = false;
+            quadro[i] = "";
+            tempos[i] = 0;
+            temposBoolean[i] = false;
         }
 
         for (int i = 0; i < entradas.size(); i++) {
-            for (String item: fila) {
-                if (item.equals(entradas.get(i))) {
-                    tem = true;
-                    break;
+
+            if(!verificarQuadro(quadro, entradas.get(i))) {
+                faltas++;
+                if (faltas <= quantidadeQuadros) {
+                    for (int j = 0; j < quantidadeQuadros; j++) {
+                        if (quadro[j].equals("")) {
+                            quadro[j] = entradas.get(i);
+                            break;
+                        }
+                    }
                 }
                 else {
-                    tem = false;
-                }
-            }
-            if(!tem) {
-                faltas++;
-                for (int j = 0; j < quantidadeQuadros; j++) {
-                    if (fila[j].equals("")) {
-                        fila[j] = entradas.get(i);
-                        vazio = true;
-                        break;
-                    }
-                    else {
-                        vazio = false;
-                    }
-                }
-                if (!vazio) {
                     for (int j = i + 1; j < entradas.size(); j++) {
                         for (int k = 0; k < quantidadeQuadros; k++) {
-                            if (!aux[k]) {
-                                tempoProxExecucao[k]++;
+                            if (!temposBoolean[k]) {
+                                tempos[k]++;
                             }
-                            if (fila[k].equals(entradas.get(j))) {
-                                aux[k] = true;
+                            if (quadro[k].equals(entradas.get(j))) {
+                                temposBoolean[k] = true;
                             }
                         }
                     }
-                    int maiorTempoProxExec = 0;
-                    int maiorTempoProxExecIndex = 0;
-                    for (int j = 0; j < quantidadeQuadros; j++) {
-                        if (j == 0) {
-                            maiorTempoProxExec = tempoProxExecucao[j];
-                            maiorTempoProxExecIndex = j;
-                        }
-                        else if (maiorTempoProxExec < tempoProxExecucao[j]) {
-                            maiorTempoProxExec = tempoProxExecucao[j];
-                            maiorTempoProxExecIndex = j;
-                        }
-                    }
-                    fila[maiorTempoProxExecIndex] = entradas.get(i);
+                    int index = maiorTempo(tempos);
+                    quadro[index] = entradas.get(i);
 
                     for (int j = 0; j < quantidadeQuadros; j++) {
-                        aux[j] = false;
-                        tempoProxExecucao[j] = 0;
+                        temposBoolean[j] = false;
+                        tempos[j] = 0;
                     }
                 }
             }
         }
-
         return faltas;
+    }
+
+    private boolean verificarQuadro(String[] quadro, String entrada) {
+        for (String item: quadro) {
+            if (item.equals(entrada)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int maiorTempo(Integer[] tempos) {
+        int maiorTempo = 0;
+        int index = 0;
+        for (int j = 0; j < tempos.length; j++) {
+            if (j == 0) {
+                maiorTempo = tempos[j];
+                index = j;
+            }
+            else if (maiorTempo < tempos[j]) {
+                maiorTempo = tempos[j];
+                index = j;
+            }
+        }
+        return index;
     }
 }

@@ -10,12 +10,18 @@ public class Main {
         Leitor leitor = new Leitor("entrada.txt");
         ArrayList<String> entradas = leitor.ler();
         String quantidadeQuadros = leitor.getQuantidadeQuadros();
+
+        Escritor escritor = new Escritor("saida.txt");
+        ArrayList<String> saidas = new ArrayList<>();
+
         FIFO fifo = new FIFO(entradas, quantidadeQuadros);
         LRU lru = new LRU(entradas, quantidadeQuadros);
         Otimo otimo = new Otimo(entradas, quantidadeQuadros);
 
-        System.out.println(fifo.substituicao());
-        System.out.println(lru.substituicao());
-        System.out.println(otimo.substituicao());
+        saidas.add("FIFO " + fifo.substituicao());
+        saidas.add("OTM " + otimo.substituicao());
+        saidas.add("LRU " +lru.substituicao());
+
+        escritor.escrever(saidas);
     }
 }

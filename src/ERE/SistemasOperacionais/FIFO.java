@@ -11,30 +11,30 @@ public class FIFO {
     }
     public int substituicao() {
         int faltas = 0;
-        boolean tem = false;
         int quantidadeQuadros = Integer.parseInt(this.quantidadeQuadros);
-        ArrayList<String> fila = new ArrayList<>();
+        ArrayList<String> quadro = new ArrayList<>();
+
         for (String entrada: entradas) {
-            for (String item: fila) {
-                if (item.equals(entrada)) {
-                    tem = true;
-                    break;
-                }
-                else {
-                    tem = false;
-                }
-            }
-            if (!tem) {
+            if (!verificarQuadro(quadro, entrada)) {
                 faltas++;
-                if (fila.size() < quantidadeQuadros) {
-                    fila.add(entrada);
+                if (quadro.size() < quantidadeQuadros) {
+                    quadro.add(entrada);
                 }
                 else {
-                    fila.remove(0);
-                    fila.add(entrada);
+                    quadro.remove(0);
+                    quadro.add(entrada);
                 }
             }
         }
         return faltas;
+    }
+
+    private boolean verificarQuadro(ArrayList<String> quadro, String entrada) {
+        for (String item: quadro) {
+            if (item.equals(entrada)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
