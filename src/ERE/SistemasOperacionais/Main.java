@@ -12,8 +12,10 @@ public class Main {
         String quantidadeQuadros = leitor.getQuantidadeQuadros();
         FIFO fifo = new FIFO(entradas, quantidadeQuadros);
         LRU lru = new LRU(entradas, quantidadeQuadros);
+        Otimo otimo = new Otimo(entradas, quantidadeQuadros);
 
         System.out.println(fifo.substituicao());
         System.out.println(lru.substituicao());
+        System.out.println(otimo.substituicao());
     }
 }
